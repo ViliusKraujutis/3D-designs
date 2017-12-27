@@ -6,13 +6,13 @@ labyrinth(template3x3);
 labyrinthLevels(maze3x3level1, maze3x3level2);
 labyrinthLevels(maze3x3level2, maze3x3level3);
 labyrinth(maze3x3level3);
-!box([maze3x3level1,maze3x3level2,maze3x3level3]);
+box([maze3x3level1,maze3x3level2,maze3x3level3]);
 
 labyrinthLevels(maze8x8level1, maze8x8level2);
 labyrinthLevels(maze8x8level2, maze8x8level3);
 labyrinthLevels(maze8x8level3, maze8x8level4);
 labyrinth(maze8x8level4);
-box([maze8x8level1,maze8x8level2,maze8x8level3,maze8x8level4]);
+!box([maze8x8level1,maze8x8level2,maze8x8level3,maze8x8level4]);
 
 
 // DRAWING SYMBOLS
@@ -200,7 +200,7 @@ module box(levels) {
     
     
     echo("Box insides: ", b1Xs, b1Ys, b1Zs);
-    rotate([0,0,180])
+    rotate([180,0,0])
     difference() {
         translate([-bt, -bt, 0])
             cube([
@@ -212,10 +212,13 @@ module box(levels) {
 
         
         // hole for ball entrance
-        translate([0,0,b1Zs+bt-2*layerHeight]) {
+        xy=extraSpace+w/2;
+        translate([xy,xy,b1Zs+bt-2*layerHeight]) {
             holes(l1, STARTING_POINT);
+        }
 
         
+        translate([0,0,b1Zs+bt-2*layerHeight]) {
             // draw levels on box
             for(i = [1:count]) {
                 marginX =     b1Ys/count   - extraSpace;
@@ -230,8 +233,12 @@ module box(levels) {
 }
 
 module levelContour(level, count) {
-    scale(1/count)
-        walls(level, 2.5*count*wallThickness);
+    // scale down to fit all mazes into one row on top of the box
+    scale(1/count) {
+        // count is used in wallThickness multiplication here to compensate scale down factor
+        // also, to make walls visible better, increasing adding additional multiplication factor
+        walls(level, 2*count*wallThickness); 
+    }
 }
 
 module bottom(lab) {
