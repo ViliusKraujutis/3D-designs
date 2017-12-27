@@ -6,11 +6,13 @@ labyrinth(template3x3);
 labyrinthLevels(maze3x3level1, maze3x3level2);
 labyrinthLevels(maze3x3level2, maze3x3level3);
 labyrinth(maze3x3level3);
+!box([maze3x3level1,maze3x3level2,maze3x3level3]);
 
 labyrinthLevels(maze8x8level1, maze8x8level2);
 labyrinthLevels(maze8x8level2, maze8x8level3);
 labyrinthLevels(maze8x8level3, maze8x8level4);
-!labyrinth(maze8x8level4);
+labyrinth(maze8x8level4);
+box([maze8x8level1,maze8x8level2,maze8x8level3,maze8x8level4]);
 
 
 // DRAWING SYMBOLS
@@ -35,19 +37,20 @@ CORNER_T_RIGHT="┤";
 
 SPACE = " ";
 HOLE = "X";
+STARTING_POINT = "O";
 
 
 // LEVEL DRAWING TEMPLATE
 
 template3x3 = [
 "┌───────┐",
-"|       |",
+"|X      |",
 "| ┌─┬─┐ |",
 "| | ╹ | |",
 "| ├╸+╺┤ |",
 "| | ╻ | |",
 "| └─┴─┘ |",
-"|       |",
+"|      O|",
 "└───────┘"];
 
 
@@ -82,7 +85,7 @@ maze3x3level3 = [
 
 maze8x8level1 = [
 "┌───────────────┐",
-"|O              |",
+"|               |",
 "├─────────────┐ |",
 "|             | |",
 "|  ┌─────╸  ╺─┤ |",
@@ -94,7 +97,7 @@ maze8x8level1 = [
 "├─────────────┐ |",
 "|             | |",
 "| ┌─────────╸ | |",
-"| |           | |",
+"| |O          | |",
 "| └───────────┘ |",
 "|               |",
 "└───────────────┘"];
@@ -159,8 +162,10 @@ maze8x8level4 = [
 ballSize = 12;
 
 levelOverlap = 2; // how much below level should go into the bottom plate
-bpt = levelOverlap+1; // bottom plate thickness
-wallThickness = 0.8; // wall thickness
+bpt = levelOverlap + 1; // bottom plate thickness
+nozzleDiameter = 0.4;
+layerHeight = 0.2;
+wallThickness = nozzleDiameter*2; // wall thickness
 wh = ballSize+bpt+levelOverlap; // wall height
 
 
@@ -173,13 +178,60 @@ module labyrinthLevels(currentLevel, levelBelow) {
     difference() {
         labyrinth(currentLevel);
         translate([0,0,-wh+levelOverlap])
-            labyrinth(levelBelow, wallThickness+0.8);
+            labyrinth(levelBelow, wallThickness+nozzleDiameter*2); // add extra two lines space for walls' overlap
     }
 }
 
 module labyrinth(lab, wallThickness = wallThickness) {
     bottom(lab);
     walls(lab, wallThickness);
+}
+
+module box(levels) {
+    count = len(levels);
+    l1 = levels[0];
+    sw = len(l1);
+    extraSpace = 3*nozzleDiameter;
+    bt = nozzleDiameter*3; // box wall thickness
+    
+    b1Xs = sw*w + extraSpace; // box inside X size
+    b1Ys = b1Xs;
+    b1Zs = (wh-levelOverlap)*count+levelOverlap + extraSpace;
+    
+    
+    echo("Box insides: ", b1Xs, b1Ys, b1Zs);
+    rotate([0,0,180])
+    difference() {
+        translate([-bt, -bt, 0])
+            cube([
+                b1Xs+2*bt, 
+                b1Ys+2*bt, 
+                b1Zs+1*bt
+            ]);
+        cube([b1Xs, b1Ys, b1Zs]);
+
+        
+        // hole for ball entrance
+        translate([0,0,b1Zs+bt-2*layerHeight]) {
+            holes(l1, STARTING_POINT);
+
+        
+            // draw levels on box
+            for(i = [1:count]) {
+                marginX =     b1Ys/count   - extraSpace;
+                marginY = (i*(b1Ys/count)) - extraSpace;
+                translate([b1Xs-marginX, b1Ys-marginY, 0])
+                levelContour(levels[i-1], count);
+            }
+        }
+    }
+    
+    
+}
+
+module levelContour(level, count) {
+    scale(1/count)
+        walls(level, 2.5*count*wallThickness);
 }
 
 module bottom(lab) {
@@ -235,12 +287,12 @@ module walls(lab, wallThickness=wallThickness) {
     }
 }
 
-module holes(lab) {
+module holes(lab, holeSymbol = HOLE) {
     sw=len(lab[0]);
     for(x=[0:sw-1]) {
         for(y=[0:sw-1]) {
             cell = lab[x][y];
-            if (cell == HOLE) {
+            if (cell == holeSymbol) {
                 tx=sw-x-1; ty=sw-y-1;
                 translate([tx*w, ty*w, 0]) {
                     hole();
