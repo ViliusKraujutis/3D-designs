@@ -166,7 +166,7 @@ module labyrinthLevels(currentLevel, levelBelow) {
     difference() {
         labyrinth(currentLevel);
         translate([0,0,-wh+levelOverlap])
-            labyrinth(levelBelow, wallThickness*1.5);
+            labyrinth(levelBelow, wallThickness+0.8);
     }
 }
 
