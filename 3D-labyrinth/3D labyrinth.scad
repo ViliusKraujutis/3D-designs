@@ -1,13 +1,18 @@
 // DRAW LABYRINTH
 
 // These module is defined below all other configuration details
-//labyrinth(cube8x8level4);
-labyrinthLevels(cube8x8level4, cube8x8level3);
+//labyrinth(template3x3);
+//labyrinth(maze3x3level3);
+labyrinthLevels(maze3x3level2, maze3x3level3);
 
 
 // DRAWING SYMBOLS
 WALL_VERTICAL = "|";
+WALL_VERTICAL_TOP = "╹";
+WALL_VERTICAL_BOTTOM = "╻";
 WALL_HORIZONTAL = "─";
+WALL_HORIZONTAL_LEFT = "╸";
+WALL_HORIZONTAL_RIGHT = "╺";
 
 CORNER_PLUS="+";
 
@@ -27,37 +32,48 @@ HOLE = "X";
 
 // LEVEL DRAWING TEMPLATE
 
-LEVEL0 = concat(
-"┌─────┐",
-"|     |",
-"| ┌┬┐ |",
-"| ├+┤ |",
-"| └┴┘ |",
-"|     |",
-"└─────┘");
+template3x3 = [
+"┌───────┐",
+"|       |",
+"| ┌─┬─┐ |",
+"| | ╹ | |",
+"| ├╸+╺┤ |",
+"| | ╻ | |",
+"| └─┴─┘ |",
+"|       |",
+"└───────┘"];
 
 
 // LEVEL DRAWINGS
 
-LEVEL1 = concat(
-"┌─────┐",
+maze3x3level1 = [
+"┌───┬─┐",
+"|   |X|",
+"| ╻ ╹ |",
+"| |   |",
+"| └───┤",
+"|    O|",
+"└─────┘"];
+
+maze3x3level2 = [
+"┌─┬───┐",
+"|X|  O|",
+"| | ╺─┤",
+"| |   |",
+"| └─╸ |",
 "|     |",
+"└─────┘"];
+
+maze3x3level3 = [
+"┌─────┐",
+"|O    |",
 "├───┐ |",
 "|  X| |",
-"| ──┘ |",
+"| ╺─┘ |",
 "|     |",
-"└─────┘");
+"└─────┘"];
 
-LEVEL2 = concat(
-"┌─────┐",
-"|    X|",
-"| ┌───┤",
-"| |O  |",
-"| └── |",
-"|     |",
-"└─────┘");
-
-cube8x8level1 = concat(
+maze8x8level1 = [
 "┌───────────────┐",
 "|O              |",
 "├─────────────┐ |",
@@ -74,8 +90,8 @@ cube8x8level1 = concat(
 "| |           | |",
 "| └───────────┘ |",
 "|               |",
-"└───────────────┘");
-cube8x8level2 = concat(
+"└───────────────┘"];
+maze8x8level2 = [
 "┌───────────────┐",
 "|X              |",
 "├─────────────┐ |",
@@ -92,8 +108,8 @@ cube8x8level2 = concat(
 "| |           | |",
 "| └───────────┘ |",
 "|               |",
-"└───────────────┘");
-cube8x8level3 = concat(
+"└───────────────┘"];
+maze8x8level3 = [
 "┌───────────────┐",
 "|O              |",
 "├─────────────┐ |",
@@ -110,8 +126,8 @@ cube8x8level3 = concat(
 "| |X          | |",
 "| └───────────┘ |",
 "|               |",
-"└───────────────┘");
-cube8x8level4 = concat(
+"└───────────────┘"];
+maze8x8level4 = [
 "┌───────────────┐",
 "|               |",
 "├─────────────┐ |",
@@ -128,17 +144,17 @@ cube8x8level4 = concat(
 "| |O          | |",
 "| └───────────┘ |",
 "|               |",
-"└───────────────┘");
+"└───────────────┘"];
 
 
 
 // PARAMETERS
-ballSize = 6;
+ballSize = 12;
 
 levelOverlap = 2; // how much below level should go into the bottom plate
 bpt = levelOverlap+1; // bottom plate thickness
 wallThickness = 0.8; // wall thickness
-wh = ballSize+bpt; // wall height
+wh = ballSize+bpt+levelOverlap; // wall height
 
 
 // VARIABLES
@@ -178,8 +194,16 @@ module walls(lab, wallThickness=wallThickness) {
             translate([tx*w, ty*w, 0]) {
                 if (cell == WALL_VERTICAL) {
                     wallVertical(wallThickness);
+                } else if (cell == WALL_VERTICAL_TOP) {
+                    wallVerticalTop(wallThickness);
+                } else if (cell == WALL_VERTICAL_BOTTOM) {
+                    wallVerticalBottom(wallThickness);
                 } else if (cell == WALL_HORIZONTAL) {
                     wallHorizontal(wallThickness);
+                } else if (cell == WALL_HORIZONTAL_LEFT) {
+                    wallHorizontalLeft(wallThickness);
+                } else if (cell == WALL_HORIZONTAL_RIGHT) {
+                    wallHorizontalRight(wallThickness);
                 } else if (cell == CORNER_TOP_LEFT) {
                     cornerTopLeft(wallThickness);
                 } else if (cell == CORNER_TOP_RIGHT) {
@@ -189,7 +213,7 @@ module walls(lab, wallThickness=wallThickness) {
                 } else if (cell == CORNER_BOTTOM_LEFT) {
                     cornerBottomLeft(wallThickness);
                 } else if (cell == CORNER_T) {
-                    cornerT();
+                    cornerT(wallThickness);
                 } else if (cell == CORNER_T_RIGHT) {
                     cornerTRight(wallThickness);
                 } else if (cell == CORNER_T_DOWN) {
@@ -233,10 +257,29 @@ module wallHorizontal(wallThickness) {
 module wallVertical(wallThickness) {
     wall(wallThickness);
 }
+module wallVerticalTop(wallThickness) {
+    wallHalf(wallThickness);
+}
+module wallVerticalBottom(wallThickness) {
+    rotate([0,0,180])
+        wallHalf(wallThickness);
+}
+module wallHorizontalLeft(wallThickness) {
+    rotate([0,0,90])
+        wallHalf(wallThickness);
+}
+module wallHorizontalRight(wallThickness) {
+    rotate([0,0,270])
+        wallHalf(wallThickness);
+}
 
 module wall(wallThickness) {
     translate([-w/2,-wallThickness/2, 0])
         cube([w, wallThickness, wh]);
+}
+module wallHalf(wallThickness) {
+    translate([0,-wallThickness/2, 0])
+        cube([w/2, wallThickness, wh]);
 }
 
 module cornerTopLeft(wallThickness) {
