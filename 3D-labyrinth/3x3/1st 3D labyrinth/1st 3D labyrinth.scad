@@ -1,4 +1,4 @@
-include <../code/main.scad>
+include <../../code/main.scad>
 
 // These module is defined below all other configuration details
 //labyrinth(template3x3);

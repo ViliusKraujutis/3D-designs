@@ -1,4 +1,4 @@
-include <../code/main.scad>
+include <../../code/main.scad>
 
 labyrinthLevels(maze8x8level1, maze8x8level2);
 //labyrinthLevels(maze8x8level2, maze8x8level3);
