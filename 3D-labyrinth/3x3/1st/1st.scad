@@ -5,10 +5,10 @@ include <../../code/main.scad>
 //
 //labyrinthLevels(maze3x3level1, maze3x3level2);
 //labyrinthLevels(maze3x3level2, maze3x3level3);
-labyrinth(maze3x3level3);
+//labyrinth(maze3x3level3);
 //box([maze3x3level1,maze3x3level2,maze3x3level3]);
 
-maze3x3level1 = [
+level1 = [
 "┌───┬─┐",
 "|   |X|",
 "| ╻ ╹ |",
@@ -17,7 +17,7 @@ maze3x3level1 = [
 "|    O|",
 "└─────┘"];
 
-maze3x3level2 = [
+level2 = [
 "┌─┬───┐",
 "|X|  O|",
 "| | ╺─┤",
@@ -26,7 +26,7 @@ maze3x3level2 = [
 "|     |",
 "└─────┘"];
 
-maze3x3level3 = [
+level3 = [
 "┌─────┐",
 "|O    |",
 "├───┐ |",

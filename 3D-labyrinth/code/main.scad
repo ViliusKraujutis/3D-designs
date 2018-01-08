@@ -35,7 +35,6 @@ template3x3 = [
 "|      O|",
 "└───────┘"];
 
-
 // PARAMETERS
 ballSize = 12;
 
@@ -118,7 +117,7 @@ module walls(lab, wallThickness=wallThickness) {
     }
 }
 
-module holes(lab, holeSymbol = HOLE) {
+module holes(lab, holeSymbol = HOLE, sizeScale=[1,1,1]) {
     sw=len(lab[0]);
     for(x=[0:sw-1]) {
         for(y=[0:sw-1]) {
@@ -126,17 +125,17 @@ module holes(lab, holeSymbol = HOLE) {
             if (cell == holeSymbol) {
                 tx=sw-x-1; ty=sw-y-1;
                 translate([tx*w, ty*w, 0]) {
-                    hole();
+                    hole(sizeScale);
                 }
             }
         }
     }
 }
 
-module hole() {
+module hole(sizeScale=[1,1,1]) {
     s=w+w-wallThickness;
-    translate([-s/2,-s/2, -1])
-        cube([s, s, bpt+2]);
+    translate([0,0, bpt/2-1])
+       scale(sizeScale) cube([s, s, bpt+2], center = true);
 }
 
 module wallHorizontal(wallThickness) {
