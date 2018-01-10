@@ -48,7 +48,7 @@ module levelContour(level, count) {
     scale(1/count) {
         // count is used in wallThickness multiplication here to compensate scale down factor
         // also, to make walls visible better, increasing adding additional multiplication factor
-        walls(level, count*wallThickness); 
+        walls(level, 2*count*nozzleDiameter); 
         holes(level, sizeScale=[0.8,0.8,2]);
     }
 }
