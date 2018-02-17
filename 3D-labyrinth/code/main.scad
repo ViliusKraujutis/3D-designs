@@ -60,8 +60,10 @@ module labyrinthLevels(currentLevel, levelBelow) {
 }
 
 module labyrinth(lab, wallThickness = wallThickness) {
-    bottom(lab);
-    walls(lab, wallThickness);
+    rotate([0,0,90]) {
+        bottom(lab);
+        walls(lab, wallThickness);
+    }
 }
 
 module bottom(lab) {

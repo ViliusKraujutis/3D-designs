@@ -1,4 +1,9 @@
 module box(levels) {
+    rotate([180,0,90]) {
+        boxUnrotated(levels);
+    }
+}
+module boxUnrotated(levels) {
     count = len(levels);
     l1 = levels[0];
     sw = len(l1);
