@@ -5,6 +5,7 @@ WALL_VERTICAL = "|";
 WALL_VERTICAL_TOP = "╹";
 WALL_VERTICAL_BOTTOM = "╻";
 WALL_HORIZONTAL = "─";
+WALL_HORIZONTAL2 = "-";
 WALL_HORIZONTAL_LEFT = "╸";
 WALL_HORIZONTAL_RIGHT = "╺";
 
@@ -39,11 +40,11 @@ template3x3 = [
 ballSize = 12;
 
 levelOverlap = 2; // how much below level should go into the bottom plate
-bpt = levelOverlap + 1; // bottom plate thickness
+bpt = levelOverlap + 1.5; // bottom plate thickness
 nozzleDiameter = 0.4;
 layerHeight = 0.2;
 wallThickness = nozzleDiameter*2; // wall thickness
-wh = ballSize+bpt+levelOverlap; // wall height
+wh = ballSize+levelOverlap; // wall height
 
 
 // VARIABLES
@@ -54,15 +55,24 @@ w = ballSize/2+wallThickness/2; // width of the cell
 module labyrinthLevels(currentLevel, levelBelow) {
     difference() {
         labyrinth(currentLevel);
-        translate([0,0,-wh+levelOverlap])
+        translate([0,0,-wh+levelOverlap-bpt])
             labyrinth(levelBelow, wallThickness+nozzleDiameter*2); // add extra two lines space for walls' overlap
     }
 }
 
 module labyrinth(lab, wallThickness = wallThickness) {
+    wt2=wallThickness/2;
+    sw=len(lab[0]);
+    insideSize = (sw-1)*w-wallThickness;
+    
     rotate([0,0,90]) {
         bottom(lab);
-        walls(lab, wallThickness);
+        difference() {
+            walls(lab, wallThickness);
+            // minus no overlap inside
+            translate([wt2,wt2, wh+bpt-levelOverlap])
+                cube([insideSize, insideSize, levelOverlap]);
+        }
     }
 }
 
@@ -82,14 +92,14 @@ module walls(lab, wallThickness=wallThickness) {
         for(y=[0:sw-1]) {
             cell = lab[x][y];
             tx=sw-x-1; ty=sw-y-1;
-            translate([tx*w, ty*w, 0]) {
+            translate([tx*w, ty*w, bpt]) {
                 if (cell == WALL_VERTICAL) {
                     wallVertical(wallThickness);
                 } else if (cell == WALL_VERTICAL_TOP) {
                     wallVerticalTop(wallThickness);
                 } else if (cell == WALL_VERTICAL_BOTTOM) {
                     wallVerticalBottom(wallThickness);
-                } else if (cell == WALL_HORIZONTAL) {
+                } else if (cell == WALL_HORIZONTAL || cell == WALL_HORIZONTAL2) {
                     wallHorizontal(wallThickness);
                 } else if (cell == WALL_HORIZONTAL_LEFT) {
                     wallHorizontalLeft(wallThickness);
