@@ -5,23 +5,23 @@ ballSize = 10;
 allLevels();
 
 module allLevels() {
-    !labyrinthLevels(lvl1, lvl2);
-//    translate([0,0,-wh])
-//        labyrinthLevels(lvl2, lvl3);
-//    translate([0,0,-2*wh])
-//        labyrinthLevels(lvl3, lvl4);
-//    translate([0,0,-3*wh])
-//        labyrinthLevels(lvl4, lvl5);
-//    translate([0,0,-4*wh])
-//        labyrinthLevels(lvl5, lvl6);
-//    translate([0,0,-5*wh])
-//        labyrinthLevels(lvl6, lvl7);
-//    translate([0,0,-6*wh])
-//        labyrinthLevels(lvl7, lvl8);
-//    translate([0,0,-7*wh])
-//        labyrinthLevels(lvl8, lvl9);
-//    translate([0,0,-8*wh])
-//        labyrinth(lvl10);
+    labyrinthLevels(lvl1, lvl2);
+    translate([0,0,-wh])
+        labyrinthLevels(lvl2, lvl3);
+    !translate([0,0,-2*wh])
+        labyrinthLevels(lvl3, lvl4);
+    translate([0,0,-3*wh])
+        labyrinthLevels(lvl4, lvl5);
+    translate([0,0,-4*wh])
+        labyrinthLevels(lvl5, lvl6);
+    translate([0,0,-5*wh])
+        labyrinthLevels(lvl6, lvl7);
+    translate([0,0,-6*wh])
+        labyrinthLevels(lvl7, lvl8);
+    translate([0,0,-7*wh])
+        labyrinthLevels(lvl8, lvl9);
+    translate([0,0,-8*wh])
+        labyrinth(lvl10);
 }
 
 
@@ -85,27 +85,27 @@ lvl2 = [
 "|     | |   |O      |", 
 "└-----┴-┴---┴-------┘"];
 lvl3 = [
-"+-+-+-+-+-+-+-+-+-+-+",
-"|   |   |           |",
-"+-+ + + + + +-+-+-+ +",
+"┌---┬---┬-----------┐",
+"|O  |   |           |",
+"├-╸ | ╻ ╹ ╻ ╺-┬---╸ |",
 "|   | |   |   |     |",
-"+ +-+-+ + +-+ + +-+-+",
+"| ╺-┴-┤ ╻ ├-╸ | ┌---┤",
 "|     | | |   | |   |",
-"+-+-+ +-+ + +-+-+ + +",
+"├-┬-╸ ├-┘ | ╺-┴-┤ ╻ |",
 "| |   |   |     | | |",
-"+ + +-+ +-+-+-+ + + +",
+"| ╹ ┌-┘ ┌-┴---┐ ╹ | |",
 "|   |   |     |   | |",
-"+ + + +-+ +-+ +-+-+ +",
+"| ╻ | ╺-┤ ┌-╸ ├---┤ |",
 "| | |   | |   |   | |",
-"+ +-+-+ + +-+-+ +-+ +",
+"| └-┴-┐ | └---┤ ╺-┤ |",
 "|     | |     |   | |",
-"+-+ +-+ + + +-+ + + +",
-"| |     | |     | | |",
-"+ +-+-+-+ +-+-+-+ + +",
+"├-┐ ╺-┘ | ╻ ╺-┘ ╻ | |",
+"|X|     | |     | | |",
+"| └-----┤ ├---┬-┤ | |",
 "|       | |   | | | |",
-"+-+-+ +-+ + + + + + +",
+"├---╸ ╺-┘ | ╻ ╹ ╹ ╹ |",
 "|         | |       |", 
-"+-+-+-+-+-+-+-+-+-+-+"];
+"└---------┴-┴-------┘"];
 lvl4 = [
 "┌───────────────────┐",
 "|                   |",
