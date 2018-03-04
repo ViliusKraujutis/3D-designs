@@ -8,7 +8,7 @@ module allLevels() {
     labyrinthLevels(lvl1, lvl2);
     translate([0,0,-wh])
         labyrinthLevels(lvl2, lvl3);
-    !translate([0,0,-2*wh])
+    translate([0,0,-2*wh])
         labyrinthLevels(lvl3, lvl4);
     translate([0,0,-3*wh])
         labyrinthLevels(lvl4, lvl5);
@@ -59,7 +59,7 @@ lvl1 = [
 "|   |   |   |   | | |",
 "├---┴---┴-╸ | ╺-┘ ╹ |",
 "|           |X      |",
-"└-----------┴-------┘"
+"└-----------┴-------┘" 
 ];
 
 lvl2 = [
