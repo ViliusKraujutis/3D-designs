@@ -1,0 +1,6 @@
+Steps you need to do:
+1. Switch the Module on
+2. Drop the ball. It will automatically trigger and start the timer.
+3. When you pass the level - press the button to activate new level map.
+4. Once you finish all levels - timer will stop.
+5. Switch the module off and on to start the game again.
