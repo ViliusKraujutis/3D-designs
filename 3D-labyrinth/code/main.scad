@@ -44,7 +44,8 @@ bpt = levelOverlap + 1.5; // bottom plate thickness
 nozzleDiameter = 0.4;
 layerHeight = 0.2;
 wallThickness = nozzleDiameter*2; // wall thickness
-wh = ballSize+levelOverlap; // wall height
+wt2=wallThickness/2;
+wh = ballSize+levelOverlap; // wall height with overlapping
 
 
 // VARIABLES
@@ -52,19 +53,19 @@ w = ballSize/2+wallThickness/2; // width of the cell
 
 
 // HELPER METHODS
-module labyrinthLevels(currentLevel, levelBelow) {
+module labyrinthLevels(currentLevel, levelBelow, addRings = true) {
     difference() {
-        labyrinth(currentLevel);
+        labyrinth(currentLevel, addRings);
         translate([0,0,-wh+levelOverlap-bpt])
-            labyrinth(levelBelow, wallThickness+nozzleDiameter*2); // add extra two lines space for walls' overlap
+            labyrinth(levelBelow, wallThickness+nozzleDiameter*2, addRing); // add extra two lines space for walls' overlap
     }
 }
 
-module labyrinth(lab, wallThickness = wallThickness) {
-    wt2=wallThickness/2;
+module labyrinth(lab, wallThickness = wallThickness, addRing = true) {
     sw=len(lab[0]);
     insideSize = (sw-1)*w-wallThickness;
-    
+    boardSize = sw*w;
+
     rotate([0,0,90]) {
         bottom(lab);
         difference() {
@@ -72,6 +73,23 @@ module labyrinth(lab, wallThickness = wallThickness) {
             // minus no overlap inside
             translate([wt2,wt2, wh+bpt-levelOverlap])
                 cube([insideSize, insideSize, levelOverlap]);
+        }
+        if(addRing) {
+            ring(boardSize);
+        }
+    }
+}
+
+/*
+    Ring is needed to smoothen the surface of the outside wall
+*/
+module ring(boardSize) {
+    inside=boardSize-w+wallThickness;
+    w2=w/2;
+    translate([-w2,-w2,bpt]){
+        difference() {
+            cube([boardSize, boardSize, ballSize]);
+            translate([w2-wt2,w2-wt2,0]) cube([inside,inside,ballSize]);
         }
     }
 }
