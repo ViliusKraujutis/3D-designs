@@ -113,7 +113,7 @@ module connectionVPF() {
 module vpfMagnets() {
     hull() {
         vpfMagnet();
-        translate([0,0,magD+2])
+        translate([0,0,magD+0.2])
             vpfMagnet();
     }
 }
@@ -121,7 +121,7 @@ module vpfMagnets() {
 magH=3;
 magD=10.5;
 module vpfMagnet() {
-    translate([cupD2/2+hookD/2-magH+e,-poleShift-poleW2+poleT2+poleW1/2,magD/2])
+    translate([cupD2/2+hookD/2-magH+e,-poleShift-poleW2+poleT2+poleW1/2,magD/2+0.8])
         rotate([0,90,0])
             cylinder(d=magD, h=magH);
 }
