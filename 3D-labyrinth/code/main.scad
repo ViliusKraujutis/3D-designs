@@ -57,7 +57,7 @@ module labyrinthLevels(currentLevel, levelBelow, addRings = true) {
     difference() {
         labyrinth(currentLevel, addRings);
         translate([0,0,-wh+levelOverlap-bpt])
-            labyrinth(levelBelow, wallThickness+nozzleDiameter*2, addRing); // add extra two lines space for walls' overlap
+            labyrinth(levelBelow, wallThickness+nozzleDiameter*2, addRings); // add extra two lines space for walls' overlap
     }
 }
 
